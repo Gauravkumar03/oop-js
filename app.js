@@ -4,7 +4,8 @@ const height_inches = document.getElementById("inches");
 const human_weight = document.getElementById("weight");
 const human_diet = document.getElementById("diet");
 const grid = document.getElementById("grid");
-const form = document.getElementById("dino-compare")
+const form = document.getElementById("dino-compare");
+let human_object
 
 // Create Dino Constructor
 function Dino(species, weight, height, diet, where, when, url) {
@@ -22,14 +23,19 @@ function Dino(species, weight, height, diet, where, when, url) {
     return `The Dinosaur dates back to ${when}`;
   };
   this.compareWeight = function () {
-    const weightDiff = weight - Number(human_weight.value);
-    return `Weight difference between me and the dino is ${weightDiff}.`;
+    if(weight > human_weight.value) {
+      return `The Dinosaur is heavier than me.`
+    } else {
+      return `I am heavier than the Dinosaur.`
+    }
   };
   this.compareHeight = function () {
-    const human_height =
-      Number(height_feet.value) * 12 + Number(height_inches.value);
-    const heightDiff = height - human_height;
-    return `Height difference between me and the dino is ${heightDiff}.`;
+    const human_height = Number(height_feet.value) * 12 + Number(height_inches)
+    if(height > human_height) {
+      return `The Dinosaur is taller than me.`
+    } else {
+      `I am taller than the Dinosaur.`
+    }
   };
   this.compareDiet = function () {
     return `The Dino's diet is ${diet} whereas my diet is ${human_diet.value}`;
@@ -72,30 +78,21 @@ function Human() {
   this.height = Number(height_feet.value) * 12 + Number(height_inches.value);
   this.weight = Number(human_weight.value);
   this.diet = human_diet.value;
-  this.url = './images/human.png'
-  this.facts = ['']
-}
-
-const btn = document.getElementById("btn");
-btn.addEventListener("click", submitData);
-
-function submitData() {
-  const humanObject = new Human();
-  dinoObjects.splice(4, 0, humanObject);
-  generateTiles();
+  this.url = "./images/human.png"
+  this.facts = [""]
 }
 
 //Generate Tiles
 
 function generateTiles() {
-  form.style.display = 'none'
+  form.style.display = "none"
   dinoObjects.forEach((obj) => {
     const randomIndex = Math.floor(Math.random() * obj.facts.length);
     const randomFact = obj.facts[randomIndex];
     const html = `
         <h3>${obj.species}</h3>
-        <img src='${obj.url}' >
-        <p>${obj.species === 'Pigeon' ? 'All birds are Dinosaurs': randomFact}</p>
+        <img src="${obj.url}" >
+        <p>${obj.species === "Pigeon" ? "All birds are Dinosaurs": randomFact}</p>
     `
     const gridItem = document.createElement("div");
     gridItem.classList.add("grid-item");
@@ -103,4 +100,16 @@ function generateTiles() {
     grid.appendChild(gridItem)
   });
 }
+
+function submitData() {
+  human_object = new Human();
+  dinoObjects.splice(4, 0, human_object);
+  generateTiles();
+}
+
+const btn = document.getElementById("btn");
+btn.addEventListener("click", submitData);
+
+
+
 
